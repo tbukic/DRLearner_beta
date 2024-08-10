@@ -132,7 +132,7 @@ def to_docker_executables(
 
   job_requirements.replicas = len(nodes)
   # python_version = f'{sys.version_info.major}.{sys.version_info.minor}'
-  python_version = 3.7
+  python_version = '3.10'
 
   # if label == 'workerpool2':
   command_lst = [
@@ -152,14 +152,28 @@ def to_docker_executables(
             'ENV PYTHONPATH=$PYTHONPATH:$(pwd)',
             'RUN apt-get install -y git',
             f'RUN apt-get -y install libpython{python_version}',
-            f'COPY {workdir_path}/ {workdir_path}',
-
-            f'COPY {workdir_path}/requirements.txt requirements.txt',
+            '''
+            RUN apt-get update \
+                && apt-get install -y --no-install-recommends \
+                  swig \
+                  cmake \
+                && rm -rf /var/cache/apt \
+                && rm -rf /var/lib/apt/lists/* \
+                apt-get clean
+            ''',
             'RUN python -m pip install xmanager',
+            f'COPY {workdir_path}/requirements.txt requirements.txt',
             'RUN python -m pip install --no-cache-dir -r requirements.txt ',
             'RUN python -m pip install git+https://github.com/ivannz/gymDiscoMaze.git@stable',
-
+            
+            f'COPY {workdir_path}/roms/ {workdir_path}/roms/',
+            #f'COPY {workdir_path}/Roms.rar {workdir_path}/Roms.rar',
             f'RUN ale-import-roms {workdir_path}/roms/',
+
+            f'COPY {workdir_path}/drlearner {workdir_path}/drlearner',
+            f'COPY {workdir_path}/examples {workdir_path}/examples',
+            f'COPY {workdir_path}/scripts {workdir_path}/scripts',
+            f'COPY {workdir_path}/LICENSE {workdir_path}/LICENSE',
             f'WORKDIR {workdir_path}',
         ]), job_requirements)]
 
