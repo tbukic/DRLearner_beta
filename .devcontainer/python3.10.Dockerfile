@@ -100,8 +100,12 @@ COPY --from=build-env /etc/apt/keyrings/ /etc/apt/keyrings/
 COPY --from=build-env /tmp/roms/ /tmp/roms/
 
 RUN apt-get update -y \
+    # python:
+    && apt-get install -y python3.10-dev \
+    # 
+    xvfb ffmpeg \
     # docker:
-    && apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin \
+    docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin \
     git \
     # google cloud sdk:
     google-cloud-cli \
