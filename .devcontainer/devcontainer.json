@@ -12,6 +12,9 @@
 		},
         "context": "${localWorkspaceFolder}"
 	},
+	"runArgs": [
+		"--gpus=all"
+	],
 	"postCreateCommand": "sudo rm -rf \"${containerWorkspaceFolder}/roms\" && sudo mv /tmp/roms \"${containerWorkspaceFolder}/roms\" && ale-import-roms \"${containerWorkspaceFolder}/roms\"",
 	"privileged": true,
 	"mounts": [
