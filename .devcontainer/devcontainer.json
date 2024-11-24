@@ -4,7 +4,7 @@
 		"dockerfile": "python3.10.Dockerfile",
 		"args": {
 			"VARIANT": "ubuntu22.04",
-			"CUDA_VERSION": "11.8.0",
+			"CUDA_VERSION": "11.8.0-cudnn8",
 			"USERNAME": "${localEnv:USERNAME}",
 			"USER_UID": "1000",
 			"USER_GID": "1000",
