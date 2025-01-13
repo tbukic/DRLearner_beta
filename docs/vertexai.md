@@ -47,7 +47,7 @@ gcloud auth configure-docker
 6. (GCP console) Set up a xmanager service account.
 - Create xmanager service account in `IAM & Admin/Service accounts` .
 - Add 'Storage Admin', 'Vertex AI Administrator', 'Vertex AI User' , 'Service Account User' roles.
-
+- If you will be building docker images on GCP and not locally, consider adding 'Cloud Build Editor' and 'Storage Object Viewer' roles as well
 7. Set up a Cloud storage bucket.
 - (GCP console) Create a Cloud storage bucket in Cloud Storage in `us-central1` region.
 - (Local) `export GOOGLE_CLOUD_BUCKET_NAME=<bucket name>`
