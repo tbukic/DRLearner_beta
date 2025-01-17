@@ -80,6 +80,7 @@ RUN source ${VIRTUAL_ENV}/bin/activate \
     && unlink Roms.rar
 
 COPY ./external/xm_docker.py ${VIRTUAL_ENV}/lib/python3.10/site-packages/launchpad/nodes/python/xm_docker.py
+COPY ./external/launch.py ${VIRTUAL_ENV}/lib/python3.10/site-packages/launchpad/launch/xm_docker/launch.py
 COPY ./external/vertex.py ${VIRTUAL_ENV}/lib/python3.10/site-packages/xmanager/cloud/vertex.py
 
 FROM nvidia/cuda:${CUDA_VERSION}-devel-${VARIANT}

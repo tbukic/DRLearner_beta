@@ -146,7 +146,9 @@ def to_docker_executables(
         path=tmp_dir,
         base_image=base_image,
         entrypoint=xm.CommandList(command_lst),
-        docker_instructions=[
+        docker_instructions=list(filter(
+          lambda instruction: instruction is not None,
+          [
             'ENV XLA_PYTHON_CLIENT_MEM_FRACTION=0.8',
             'ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/lib:/usr/lib:/usr/local/lib:/opt/conda/lib',
             'ENV PYTHONPATH=$PYTHONPATH:$(pwd)',
@@ -157,6 +159,7 @@ def to_docker_executables(
                 && apt-get install -y --no-install-recommends \
                   swig \
                   cmake \
+                  xvfb ffmpeg \
                 && rm -rf /var/cache/apt \
                 && rm -rf /var/lib/apt/lists/* \
                 apt-get clean
@@ -173,9 +176,14 @@ def to_docker_executables(
             f'COPY {workdir_path}/drlearner {workdir_path}/drlearner',
             f'COPY {workdir_path}/examples {workdir_path}/examples',
             f'COPY {workdir_path}/scripts {workdir_path}/scripts',
+            f'COPY {workdir_path}/my_process_entry.py {workdir_path}/my_process_entry.py',
+            f'COPY {workdir_path}/{_INIT_FILE_NAME} {workdir_path}/{_INIT_FILE_NAME}' if docker_config.python_path else '',
+            f'COPY {workdir_path}/{_DATA_FILE_NAME} {workdir_path}/{_DATA_FILE_NAME}',
             f'COPY {workdir_path}/LICENSE {workdir_path}/LICENSE',
             f'WORKDIR {workdir_path}',
-        ]), job_requirements)]
+          ]
+        ))),
+        job_requirements)]
 
   # else:
   #   base_image = f'python:{python_version}'
